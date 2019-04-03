@@ -1,0 +1,14 @@
+{
+  "useTestTokens": false,
+  "nostoDomain": "http://my.nosto.com",
+  "platform": "custom-platform",
+  "endpoints": {
+    "sso": "/hub/magento/load",
+    "create": "/api/accounts/create",
+    "defaultIrame": "/hub/custom-platform/install?lang=en&front_pu=http://yourstore.example.com&unique_id=uniq123&fname=firstname&lname=username&email=devnull%40nosto.com&v=1"
+  },
+  "testToken": {
+    "sso": null,
+    "signup": null
+  }
+}
