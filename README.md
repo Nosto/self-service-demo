@@ -12,3 +12,5 @@ Rename `config.json.dist` to `config.json` and configure the values.
 Start the by running:
 
 `node ./bin/www` 
+
+You should see the iframe when visiting http://localhost:3000
