@@ -1,5 +1,6 @@
 const axios = require('axios');
 const nostoConfig = require('../config');
+const fs = require('fs');
 
 module.exports = {
     getIframeUrl(token) {
@@ -19,7 +20,13 @@ module.exports = {
             });
     },
     saveAccount(nostoAccountObject) {
-        // implement logic for peristing Nosto account id and tokens
+        const accountFileName = this.getConfig('accountFileName');
+        return new Promise((resolve, reject) => {
+            fs.writeFile(accountFileName, JSON.stringify(nostoAccountObject), error => {
+                if (error) reject(error);
+                resolve(nostoAccountObject);
+            });
+        });
     },
     findAccountInScope(storeScope) {
         // implement logic for fethching Nosto account in given scope (store view)
@@ -30,8 +37,16 @@ module.exports = {
     getPersistedToken(tokenName) {
         // implement logic for peristing Nosto account id and tokens
         if (this.getConfig('useTestTokens')) {
-            return this.getTestToken(tokenName);
+            this.getTestToken(tokenName);
         }
+        // Read from file
+        const config = fs.readFileSync(this.getConfig('accountFileName'));
+        // Check if the result is empty & return null if it is
+        if (config && config.toString() &&config.length > 10) {
+            const json = JSON.parse(config.toString());
+            return json.sso_token;
+        }
+
         return null;
     },
     getConfig(key) {

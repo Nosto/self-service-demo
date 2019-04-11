@@ -26,25 +26,36 @@ router.post('/create', function(req, res, next) {
             'API_SETTINGS'
         ]
     });
-    axios.post(nostoService.getEndpoint('create'), data).then((nostoResponse) => {
-        nostoService.saveAccount(nostoResponse.data);
-        const token = nostoService.getPersistedToken('sso');
-        nostoService.getIframeUrl(token).then((result) => {
-            res.json({
-                redirect_url: result
+    axios
+        .post(nostoService.getEndpoint('create'), data)
+        .then((nostoResponse) => {
+            nostoService
+            .saveAccount(nostoResponse.data)
+            .then((nostoAccount) => {
+                    nostoService.getIframeUrl(nostoAccount.sso_token).then((result) => {
+                        res.json({
+                            redirect_url: result
+                        });
+                    }).catch((reason) => {
+                        res.status(400).json({
+                            message: "SSO failed",
+                            error: reason
+                        })
+                    });
+            })
+            .catch((err) => {
+                res.status(400).json({
+                    message: "Account saving failed",
+                    error: err.message
+                })
             });
-        }).catch((reason) => {
+        })
+        .catch((nostoError) => {
             res.status(400).json({
-                message: "SSO failed",
-                error: reason
+                message: "Account creation request failed",
+                error: nostoError.message
             })
         });
-    }).catch((nostoError) => {
-        res.status(400).json({
-            message: "Account creation failed",
-            error: nostoError.message
-        })
-    });
 });
 
 /* removes Nosto account from current store scope */

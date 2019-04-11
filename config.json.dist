@@ -1,5 +1,6 @@
 {
   "useTestTokens": false,
+  "accountFileName": "/tmp/nosto-account.json",
   "nostoDomain": "http://my.nosto.com",
   "platform": "custom-platform",
   "endpoints": {
