@@ -1,7 +1,7 @@
 {
   "useTestTokens": false,
   "accountFileName": "/tmp/nosto-account.json",
-  "nostoDomain": "http://my.nosto.com",
+  "nostoDomain": "http://my.nosto.com",  # Please note that this file must exists
   "platform": "custom-platform",
   "endpoints": {
     "sso": "/hub/magento/load",
